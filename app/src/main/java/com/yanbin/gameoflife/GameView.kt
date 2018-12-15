@@ -5,8 +5,10 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 
 class GameView : View {
 
@@ -17,34 +19,52 @@ class GameView : View {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     private val isRunning: AtomicBoolean = AtomicBoolean(false)
+    private val updateFreq: AtomicInteger = AtomicInteger(MIN_UPDATE_PERIOD)
+
+    companion object {
+        const val CELL_SIZE: Float = 20f
+        const val MIN_UPDATE_PERIOD = 10
+    }
 
     private val cellPaint = Paint().apply {
         color = Color.BLACK
     }
 
     private var gameMap: GameMap = GameMap(100, 100).apply {
-        setSeeds(listOf(
-            Position(0, 1),
-            Position(1, 2),
-            Position(2, 0),
-            Position(2, 1),
-            Position(2, 2)
-        ))
+        setSeeds(GameTemplates.smallShip)
     }
 
-    private val CELL_SIZE: Float = 20f
-
-    fun reset(positions: List<Position>){
-        gameMap.setSeeds(positions)
+    fun clear(){
+        gameMap.clear()
     }
 
-    fun start(){
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                val y = event.x / CELL_SIZE
+                val x = event.y / CELL_SIZE
+                gameMap.setSeeds(GameTemplates.smallShip(x.toInt(), y.toInt()))
+                return true
+            }
+            MotionEvent.ACTION_UP -> {
+                return false
+            }
+        }
+
+        return super.onTouchEvent(event)
+    }
+
+    fun start() {
         isRunning.set(true)
         invalidate()
     }
 
-    fun stop(){
+    fun stop() {
         isRunning.set(false)
+    }
+
+    fun setUpdateFreq(freq: Int) {
+        updateFreq.set(MIN_UPDATE_PERIOD + (freq * freq) / 50f.toInt())
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -63,10 +83,10 @@ class GameView : View {
         gameMap.nextRound()
 
         postDelayed({
-            if(isRunning.get()){
+            if (isRunning.get()) {
                 invalidate()
             }
-        }, 100)
+        }, updateFreq.get().toLong())
     }
 
 }

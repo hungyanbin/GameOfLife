@@ -12,6 +12,10 @@ class GameMap(val width: Int, val height: Int) {
         }
     }
 
+    fun clear(){
+        lifes = Array(height + 2) { Array(width + 2) { false } }
+    }
+
     fun nextRound() {
         lifes.forEachIndexed { x, rowLifes ->
             if (x != 0 && x != lifes.size - 1) {
