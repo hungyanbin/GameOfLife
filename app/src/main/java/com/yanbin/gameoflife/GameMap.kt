@@ -64,7 +64,7 @@ class GameMap(val width: Int, val height: Int) {
                 rowLifes.forEachIndexed { y, life ->
                     if (y != 0 && y != rowLifes.size - 1) {
                         if (lifes[x][y]) {
-                            currentLifes.add(Position(x - 1, y - 1))
+                            currentLifes.add(Position(y - 1, x - 1))
                         }
                     }
                 }
