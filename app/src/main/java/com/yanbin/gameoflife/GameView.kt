@@ -41,8 +41,8 @@ class GameView : View {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                val y = event.x / CELL_SIZE
-                val x = event.y / CELL_SIZE
+                val y = event.y / CELL_SIZE
+                val x = event.x / CELL_SIZE
                 gameMap.setSeeds(GameTemplates.smallShip(x.toInt(), y.toInt()))
                 return true
             }
