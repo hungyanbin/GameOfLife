@@ -22,7 +22,7 @@ class GameView : View {
     private val updateFreq: AtomicInteger = AtomicInteger(MIN_UPDATE_PERIOD)
 
     companion object {
-        const val CELL_SIZE: Float = 20f
+        const val CELL_SIZE: Float = 5f
         const val MIN_UPDATE_PERIOD = 10
     }
 
@@ -30,7 +30,7 @@ class GameView : View {
         color = Color.BLACK
     }
 
-    private var gameMap: GameMap = GameMap(100, 100).apply {
+    private var gameMap: GameMap = GameMap((400/CELL_SIZE.toInt()).dpToPx(), (400/CELL_SIZE.toInt()).dpToPx()).apply {
         setSeeds(GameTemplates.smallShip)
     }
 
