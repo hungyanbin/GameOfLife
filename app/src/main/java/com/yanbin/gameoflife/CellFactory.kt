@@ -1,6 +1,6 @@
 package com.yanbin.gameoflife
 
-object GameTemplates{
+object CellFactory{
 
     val smallShip = listOf(
         Position(0, 1),

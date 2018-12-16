@@ -80,4 +80,5 @@ class GameMap(val width: Int, val height: Int) {
 
 }
 
+typealias Lives = List<Position>
 data class Position(val x: Int, val y: Int)
