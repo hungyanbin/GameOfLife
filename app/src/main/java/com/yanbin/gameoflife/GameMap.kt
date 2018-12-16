@@ -8,27 +8,27 @@ class GameMap(val width: Int, val height: Int) {
 
     fun setSeeds(seeds: List<Position>) {
         seeds.forEach {
-            lifes[it.x + 1][it.y + 1] = true
+            lifes[it.y + 1][it.x + 1] = true
         }
     }
 
     fun nextRound() {
-        lifes.forEachIndexed { x, rowLifes ->
-            if (x != 0 && x != lifes.size - 1) {
-                rowLifes.forEachIndexed { y, life ->
-                    if (y != 0 && y != rowLifes.size - 1) {
+        lifes.forEachIndexed { y, rowLifes ->
+            if (y != 0 && y != lifes.size - 1) {
+                rowLifes.forEachIndexed { x, life ->
+                    if (x != 0 && x != rowLifes.size - 1) {
                         val numOfNeighbors = getNeighbors(x, y)
                         if(life){
                             if (numOfNeighbors < 2) {
-                                nextGeneration[x][y] = false
+                                nextGeneration[y][x] = false
                             }else if(numOfNeighbors < 4){
-                                nextGeneration[x][y] = life
+                                nextGeneration[y][x] = life
                             }else{
-                                nextGeneration[x][y] = false
+                                nextGeneration[y][x] = false
                             }
                         }else{
                             if (numOfNeighbors == 3){
-                                nextGeneration[x][y] = true
+                                nextGeneration[y][x] = true
                             }
                         }
 
@@ -49,7 +49,7 @@ class GameMap(val width: Int, val height: Int) {
         var count = 0
         for (i in x - 1..x + 1) {
             for (j in y - 1..y + 1) {
-                if (lifes[i][j] && !(i == x && j == y)) {
+                if (lifes[j][i] && !(i == x && j == y)) {
                     count++
                 }
             }
@@ -59,11 +59,11 @@ class GameMap(val width: Int, val height: Int) {
 
     fun getCurrentLifes(): List<Position> {
         val currentLifes = mutableListOf<Position>()
-        lifes.forEachIndexed { x, rowLifes ->
-            if (x != 0 && x != lifes.size - 1) {
-                rowLifes.forEachIndexed { y, life ->
-                    if (y != 0 && y != rowLifes.size - 1) {
-                        if (lifes[x][y]) {
+        lifes.forEachIndexed { y, rowLifes ->
+            if (y != 0 && y != lifes.size - 1) {
+                rowLifes.forEachIndexed { x, life ->
+                    if (x != 0 && x != rowLifes.size - 1) {
+                        if (lifes[y][x]) {
                             currentLifes.add(Position(x - 1, y - 1))
                         }
                     }

@@ -1,5 +1,8 @@
 package com.yanbin.gameoflife
 
+import org.hamcrest.MatcherAssert
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers
 import org.junit.Assert
 import org.junit.Test
 
@@ -43,7 +46,7 @@ class GameMapTest{
                 Position(1, 0),
                 Position(1, 1),
                 Position(1, 2))
-        Assert.assertEquals(expectLifes, nextRoundLifess)
+        MatcherAssert.assertThat<List<Position>>(expectLifes, Matchers.containsInAnyOrder(*nextRoundLifess.toTypedArray()))
     }
 
     @Test
@@ -60,6 +63,6 @@ class GameMapTest{
                 Position(1, 0),
                 Position(1, 2),
                 Position(2,1))
-        Assert.assertEquals(expectLifes, nextRoundLifess)
+        MatcherAssert.assertThat(expectLifes, Matchers.containsInAnyOrder(*nextRoundLifess.toTypedArray()))
     }
 }
