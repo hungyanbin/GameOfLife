@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        viewModel.liveLifes.observe(this, Observer {
+        viewModel.liveLives.observe(this, Observer {
             gameView.lives = it
             gameView.invalidate()
         })
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         seekBar.setOnSeekBarChangeListener(
             object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(p0: SeekBar?, progress: Int, p2: Boolean) {
-                    gameView.setUpdateFreq(progress)
+                    viewModel.gameSpeed.set(progress)
                 }
 
                 override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -70,6 +70,11 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.onStart()
     }
 
 }
